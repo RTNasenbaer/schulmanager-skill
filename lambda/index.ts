@@ -18,7 +18,11 @@ import { LaunchRequestHandler } from './handlers/LaunchRequestHandler';
 import { TodayScheduleIntentHandler } from './handlers/TodayScheduleIntentHandler';
 import { TomorrowScheduleIntentHandler } from './handlers/TomorrowScheduleIntentHandler';
 import { SubstitutionsIntentHandler } from './handlers/SubstitutionsIntentHandler';
+import { TomorrowSubstitutionsIntentHandler } from './handlers/TomorrowSubstitutionsIntentHandler';
 import { NextLessonIntentHandler } from './handlers/NextLessonIntentHandler';
+import { WeekScheduleIntentHandler } from './handlers/WeekScheduleIntentHandler';
+import { TomorrowCancelledIntentHandler } from './handlers/TomorrowCancelledIntentHandler';
+import { WeekCancelledIntentHandler } from './handlers/WeekCancelledIntentHandler';
 import { HelpIntentHandler } from './handlers/HelpIntentHandler';
 import { CancelStopIntentHandler } from './handlers/CancelStopIntentHandler';
 
@@ -64,7 +68,11 @@ export const handler = SkillBuilders.custom()
     TodayScheduleIntentHandler,
     TomorrowScheduleIntentHandler,
     SubstitutionsIntentHandler,
+    TomorrowSubstitutionsIntentHandler,
     NextLessonIntentHandler,
+    WeekScheduleIntentHandler,
+    TomorrowCancelledIntentHandler,
+    WeekCancelledIntentHandler,
     HelpIntentHandler,
     CancelStopIntentHandler,
     SessionEndedRequestHandler

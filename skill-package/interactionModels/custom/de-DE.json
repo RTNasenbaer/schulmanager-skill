@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "schulmanager",
+      "invocationName": "schulmanager api",
       "intents": [
         {
           "name": "TodayScheduleIntent",
@@ -47,6 +47,49 @@
             "was kommt als nächstes",
             "nächste Stunde",
             "was steht als nächstes an"
+          ]
+        },
+        {
+          "name": "TomorrowSubstitutionsIntent",
+          "slots": [],
+          "samples": [
+            "welche Stunden fallen morgen aus",
+            "gibt es morgen Vertretungen",
+            "vertretungsplan für morgen",
+            "welche Ausfälle gibt es morgen",
+            "fällt morgen was aus"
+          ]
+        },
+        {
+          "name": "WeekScheduleIntent",
+          "slots": [],
+          "samples": [
+            "stundenplan für die Woche",
+            "was habe ich diese Woche",
+            "wochenplan",
+            "zeige mir die Woche",
+            "stundenplan Woche"
+          ]
+        },
+        {
+          "name": "TomorrowCancelledIntent",
+          "slots": [],
+          "samples": [
+            "welche Stunden fallen morgen aus",
+            "was fällt morgen aus",
+            "ausgefallene Stunden morgen",
+            "ausfälle morgen"
+          ]
+        },
+        {
+          "name": "WeekCancelledIntent",
+          "slots": [],
+          "samples": [
+            "welche Stunden fallen diese Woche aus",
+            "was fällt diese Woche aus",
+            "ausgefallene Stunden Woche",
+            "ausfälle Woche",
+            "wochenausfälle"
           ]
         },
         {

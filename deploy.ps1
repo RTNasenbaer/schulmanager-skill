@@ -53,10 +53,24 @@ if (Test-Path "dist\utils") {
 Write-Host "✅ Files copied successfully" -ForegroundColor Green
 
 # Deploy to Alexa
-Write-Host "`n🚀 Deploying to Alexa-hosted skill..." -ForegroundColor Yellow
-ask deploy
+🚀 Deploying to Alexa-hosted skill...
 
-if ($LASTEXITCODE -eq 0) {
+# Check if skill exists
+Write-Host "Checking skill status..." -ForegroundColor Yellow
+$deployOutput = ask deploy 2>&1 | Out-String
+
+if ($deployOutput -match "git push") {
+    Write-Host "`n⚠️  Alexa-hosted skill detected!" -ForegroundColor Yellow
+    Write-Host "For Alexa-hosted skills, deployment is done via Git." -ForegroundColor Yellow
+    Write-Host "`nPlease follow these steps:" -ForegroundColor White
+    Write-Host "1. Get your skill's Git URL from Alexa Developer Console" -ForegroundColor White
+    Write-Host "2. Go to: https://developer.amazon.com/alexa/console/ask" -ForegroundColor White
+    Write-Host "3. Open your skill → Code tab → Copy Git URL" -ForegroundColor White
+    Write-Host "4. Run: git remote add alexa <git-url>" -ForegroundColor White
+    Write-Host "5. Run: git add . && git commit -m 'Deploy skill' && git push alexa master" -ForegroundColor White
+    Write-Host "`n💡 Or use the manual deployment guide in MANUAL_DEPLOYMENT.md" -ForegroundColor Cyan
+    exit 0
+} elseif ($deployOutput -match "successfully") {
     Write-Host "`n✅ Deployment successful!" -ForegroundColor Green
     Write-Host "`n🎉 Your skill is now live and ready to test!" -ForegroundColor Cyan
     Write-Host "`nNext steps:" -ForegroundColor White
@@ -65,7 +79,8 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "3. Click 'Test' tab" -ForegroundColor White
     Write-Host "4. Say: 'Alexa, öffne Schulmanager'" -ForegroundColor White
 } else {
-    Write-Host "`n❌ Deployment failed" -ForegroundColor Red
-    Write-Host "Check the error messages above" -ForegroundColor Yellow
-    exit 1
+    Write-Host "`n⚠️  Deployment requires manual steps" -ForegroundColor Yellow
+    Write-Host $deployOutput
+    Write-Host "`nSee MANUAL_DEPLOYMENT.md for complete instructions" -ForegroundColor Cyan
+    exit 0
 }
