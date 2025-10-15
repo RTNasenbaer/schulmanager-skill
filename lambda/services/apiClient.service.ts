@@ -5,8 +5,9 @@
 
 import axios, { AxiosInstance } from 'axios';
 
-const BACKEND_API_URL = process.env.BACKEND_API_URL || 'http://localhost:3000/api';
-const API_KEY = process.env.API_KEY || '';
+// Production backend configuration
+const BACKEND_API_URL = 'https://schulmanager-backend-api.onrender.com/api';
+const API_KEY = process.env.API_KEY || 'dev-test-key-change-in-production';
 
 class ApiClient {
   private client: AxiosInstance;

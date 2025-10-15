@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "deploy": "ask deploy",
-    "clean": "rm -rf dist",
+    "clean": "if exist dist rmdir /s /q dist",
     "prebuild": "yarn clean",
     "test": "jest",
     "lint": "eslint lambda --ext .ts",
