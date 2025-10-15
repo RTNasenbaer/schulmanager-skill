@@ -1,0 +1,72 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "schulmanager",
+      "intents": [
+        {
+          "name": "TodayScheduleIntent",
+          "slots": [],
+          "samples": [
+            "welche Stunden habe ich heute",
+            "was habe ich heute",
+            "stundenplan für heute",
+            "was steht heute auf dem Stundenplan",
+            "welche Fächer habe ich heute",
+            "was habe ich heute in der Schule"
+          ]
+        },
+        {
+          "name": "TomorrowScheduleIntent",
+          "slots": [],
+          "samples": [
+            "welche Stunden habe ich morgen",
+            "was habe ich morgen",
+            "stundenplan für morgen",
+            "was steht morgen auf dem Stundenplan",
+            "welche Fächer habe ich morgen"
+          ]
+        },
+        {
+          "name": "SubstitutionsIntent",
+          "slots": [],
+          "samples": [
+            "welche Stunden fallen heute aus",
+            "gibt es Vertretungen",
+            "gibt es heute Vertretungen",
+            "fällt heute was aus",
+            "vertretungsplan für heute",
+            "welche Ausfälle gibt es heute"
+          ]
+        },
+        {
+          "name": "NextLessonIntent",
+          "slots": [],
+          "samples": [
+            "was habe ich als nächstes",
+            "welche Stunde kommt jetzt",
+            "was kommt als nächstes",
+            "nächste Stunde",
+            "was steht als nächstes an"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        }
+      ],
+      "types": []
+    }
+  }
+}
