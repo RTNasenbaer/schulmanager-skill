@@ -25,9 +25,9 @@ Thumbs.db
 *.swp
 *.swo
 
-# ASK CLI
-.ask/
-ask-states.json
+# ASK CLI - Keep these files for deployment state tracking
+# .ask/ folder should be committed
+# ask-states.json tracks deployment state
 
 # AWS
 .aws-sam/
