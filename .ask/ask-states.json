@@ -10,7 +10,8 @@
         "default": {
           "lastDeployHash": "not-deployed-yet"
         }
-      }
+      },
+      "deploymentStatus": "IN_PROGRESS"
     }
   }
 }

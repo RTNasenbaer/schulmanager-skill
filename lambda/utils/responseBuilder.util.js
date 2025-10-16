@@ -73,4 +73,3 @@ function formatSubstitutionsForSpeech(substitutions) {
     }
     return speech;
 }
-//# sourceMappingURL=responseBuilder.util.js.map

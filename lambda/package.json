@@ -4,6 +4,9 @@
   "description": "Lambda function for Schulmanager Alexa Skill",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "prebuild": "npm run clean",
+    "clean": "find . -name '*.js' -not -path './node_modules/*' -delete || true && find . -name '*.js.map' -not -path './node_modules/*' -delete || true",
     "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {

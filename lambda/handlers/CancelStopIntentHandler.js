@@ -17,4 +17,3 @@ exports.CancelStopIntentHandler = {
             .getResponse();
     },
 };
-//# sourceMappingURL=CancelStopIntentHandler.js.map

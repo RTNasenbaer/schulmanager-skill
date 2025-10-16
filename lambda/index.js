@@ -54,4 +54,3 @@ exports.handler = ask_sdk_core_1.SkillBuilders.custom()
     .addRequestHandlers(LaunchRequestHandler_1.LaunchRequestHandler, TodayScheduleIntentHandler_1.TodayScheduleIntentHandler, TomorrowScheduleIntentHandler_1.TomorrowScheduleIntentHandler, SubstitutionsIntentHandler_1.SubstitutionsIntentHandler, TomorrowSubstitutionsIntentHandler_1.TomorrowSubstitutionsIntentHandler, NextLessonIntentHandler_1.NextLessonIntentHandler, WeekScheduleIntentHandler_1.WeekScheduleIntentHandler, TomorrowCancelledIntentHandler_1.TomorrowCancelledIntentHandler, WeekCancelledIntentHandler_1.WeekCancelledIntentHandler, HelpIntentHandler_1.HelpIntentHandler, CancelStopIntentHandler_1.CancelStopIntentHandler, SessionEndedRequestHandler)
     .addErrorHandlers(ErrorHandler)
     .lambda();
-//# sourceMappingURL=index.js.map

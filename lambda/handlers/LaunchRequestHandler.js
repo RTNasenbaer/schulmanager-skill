@@ -20,4 +20,3 @@ exports.LaunchRequestHandler = {
             .getResponse();
     },
 };
-//# sourceMappingURL=LaunchRequestHandler.js.map

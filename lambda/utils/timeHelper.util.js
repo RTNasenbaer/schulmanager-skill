@@ -45,4 +45,3 @@ function isTimePast(time) {
     const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     return time < currentTime;
 }
-//# sourceMappingURL=timeHelper.util.js.map

@@ -21,4 +21,3 @@ exports.HelpIntentHandler = {
             .getResponse();
     },
 };
-//# sourceMappingURL=HelpIntentHandler.js.map
