@@ -3,8 +3,21 @@
 *.map
 !*.d.ts
 
-# TypeScript config
-tsconfig.json
+# TypeScript config in parent folder should not be deployed
+# But lambda/tsconfig.json IS needed for build
+# (We'll explicitly add it with git add -f)
 
 # Dev dependencies
 devDependencies
+
+# Yarn (Alexa-hosted uses npm)
+yarn.lock
+yarn-error.log
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
