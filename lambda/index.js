@@ -11,7 +11,11 @@ const LaunchRequestHandler_1 = require("./handlers/LaunchRequestHandler");
 const TodayScheduleIntentHandler_1 = require("./handlers/TodayScheduleIntentHandler");
 const TomorrowScheduleIntentHandler_1 = require("./handlers/TomorrowScheduleIntentHandler");
 const SubstitutionsIntentHandler_1 = require("./handlers/SubstitutionsIntentHandler");
+const TomorrowSubstitutionsIntentHandler_1 = require("./handlers/TomorrowSubstitutionsIntentHandler");
 const NextLessonIntentHandler_1 = require("./handlers/NextLessonIntentHandler");
+const WeekScheduleIntentHandler_1 = require("./handlers/WeekScheduleIntentHandler");
+const TomorrowCancelledIntentHandler_1 = require("./handlers/TomorrowCancelledIntentHandler");
+const WeekCancelledIntentHandler_1 = require("./handlers/WeekCancelledIntentHandler");
 const HelpIntentHandler_1 = require("./handlers/HelpIntentHandler");
 const CancelStopIntentHandler_1 = require("./handlers/CancelStopIntentHandler");
 /**
@@ -47,7 +51,7 @@ const ErrorHandler = {
  * Lambda Handler Export
  */
 exports.handler = ask_sdk_core_1.SkillBuilders.custom()
-    .addRequestHandlers(LaunchRequestHandler_1.LaunchRequestHandler, TodayScheduleIntentHandler_1.TodayScheduleIntentHandler, TomorrowScheduleIntentHandler_1.TomorrowScheduleIntentHandler, SubstitutionsIntentHandler_1.SubstitutionsIntentHandler, NextLessonIntentHandler_1.NextLessonIntentHandler, HelpIntentHandler_1.HelpIntentHandler, CancelStopIntentHandler_1.CancelStopIntentHandler, SessionEndedRequestHandler)
+    .addRequestHandlers(LaunchRequestHandler_1.LaunchRequestHandler, TodayScheduleIntentHandler_1.TodayScheduleIntentHandler, TomorrowScheduleIntentHandler_1.TomorrowScheduleIntentHandler, SubstitutionsIntentHandler_1.SubstitutionsIntentHandler, TomorrowSubstitutionsIntentHandler_1.TomorrowSubstitutionsIntentHandler, NextLessonIntentHandler_1.NextLessonIntentHandler, WeekScheduleIntentHandler_1.WeekScheduleIntentHandler, TomorrowCancelledIntentHandler_1.TomorrowCancelledIntentHandler, WeekCancelledIntentHandler_1.WeekCancelledIntentHandler, HelpIntentHandler_1.HelpIntentHandler, CancelStopIntentHandler_1.CancelStopIntentHandler, SessionEndedRequestHandler)
     .addErrorHandlers(ErrorHandler)
     .lambda();
 //# sourceMappingURL=index.js.map
