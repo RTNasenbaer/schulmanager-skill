@@ -1,0 +1,10 @@
+# TypeScript source files (not needed in deployment)
+*.ts
+*.map
+!*.d.ts
+
+# TypeScript config
+tsconfig.json
+
+# Dev dependencies
+devDependencies
