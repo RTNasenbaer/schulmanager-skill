@@ -1,7 +1,7 @@
-# TypeScript source files (not needed in deployment)
-*.ts
-*.map
-!*.d.ts
+# Compiled JavaScript files (Alexa will compile TypeScript)
+*.js
+*.js.map
+*.d.ts
 
 # TypeScript config in parent folder should not be deployed
 # But lambda/tsconfig.json IS needed for build
