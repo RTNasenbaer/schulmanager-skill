@@ -32,8 +32,14 @@ exports.TodayScheduleIntentHandler = {
         }
         catch (error) {
             console.error('Error fetching today timetable:', error);
-            const speakOutput = 'Es gab ein Problem beim Abrufen deines Stundenplans. ' +
+            let speakOutput = 'Es gab ein Problem beim Abrufen deines Stundenplans. ' +
                 'Bitte versuche es später erneut.';
+            // Special message for backend sleeping
+            if (error.message === 'BACKEND_SLEEPING') {
+                speakOutput =
+                    'Der Schulmanager Service startet gerade. ' +
+                        'Bitte versuche es in wenigen Sekunden erneut.';
+            }
             return handlerInput.responseBuilder
                 .speak(speakOutput)
                 .getResponse();

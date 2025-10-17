@@ -14,6 +14,8 @@ const BACKEND_API_URL = 'https://schulmanager-backend-api.onrender.com/api';
 const API_KEY = process.env.API_KEY || 'nVDlr2QzHS7qZN4sjo8mfBGpEXxvIyKP';
 class ApiClient {
     client;
+    maxRetries = 2;
+    retryDelay = 3000; // 3 seconds
     constructor() {
         this.client = axios_1.default.create({
             baseURL: BACKEND_API_URL,
@@ -23,21 +25,52 @@ class ApiClient {
                 'X-API-Key': API_KEY,
             },
         });
+        // Add response interceptor to detect HTML responses
+        this.client.interceptors.response.use((response) => response, (error) => {
+            // Check if we got HTML instead of JSON (Render sleep/redirect page)
+            if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE html>')) {
+                console.warn('Backend returned HTML (likely sleeping on Render.com)');
+                return Promise.reject(new Error('BACKEND_SLEEPING'));
+            }
+            return Promise.reject(error);
+        });
+    }
+    /**
+     * Retry logic for cold start scenarios
+     */
+    async makeRequestWithRetry(requestFn, retryCount = 0) {
+        try {
+            return await requestFn();
+        }
+        catch (error) {
+            const isLastRetry = retryCount >= this.maxRetries;
+            const isRetryableError = error.message === 'BACKEND_SLEEPING' ||
+                error.code === 'ECONNABORTED' ||
+                error.code === 'ETIMEDOUT';
+            if (isRetryableError && !isLastRetry) {
+                console.log(`Retry ${retryCount + 1}/${this.maxRetries} after ${this.retryDelay}ms...`);
+                await new Promise(resolve => setTimeout(resolve, this.retryDelay));
+                return this.makeRequestWithRetry(requestFn, retryCount + 1);
+            }
+            throw error;
+        }
     }
     /**
      * Stundenplan für heute abrufen
      */
     async getTodayTimetable(userId) {
-        try {
-            const response = await this.client.get('/timetable/today', {
-                headers: { 'X-User-Id': userId },
-            });
-            return response.data.data;
-        }
-        catch (error) {
-            console.error('API Error (getTodayTimetable):', error);
-            throw error;
-        }
+        return this.makeRequestWithRetry(async () => {
+            try {
+                const response = await this.client.get('/timetable/today', {
+                    headers: { 'X-User-Id': userId },
+                });
+                return response.data.data;
+            }
+            catch (error) {
+                console.error('API Error (getTodayTimetable):', error);
+                throw error;
+            }
+        });
     }
     /**
      * Stundenplan für morgen abrufen

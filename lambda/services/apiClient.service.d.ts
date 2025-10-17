@@ -4,7 +4,13 @@
  */
 declare class ApiClient {
     private client;
+    private maxRetries;
+    private retryDelay;
     constructor();
+    /**
+     * Retry logic for cold start scenarios
+     */
+    private makeRequestWithRetry;
     /**
      * Stundenplan für heute abrufen
      */
