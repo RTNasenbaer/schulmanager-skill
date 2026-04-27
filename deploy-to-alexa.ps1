@@ -53,7 +53,18 @@ Write-Host "Pushing to Alexa (master branch = development stage)..." -Foreground
 git push $repoUrl master --force
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "`n✅ Successfully deployed to Alexa development stage!" -ForegroundColor Green
+    Write-Host "\n✅ Successfully deployed to Alexa development stage!" -ForegroundColor Green
+    
+    # Sync dev branch with master (for Code Editor in Alexa Developer Console)
+    Write-Host "Syncing dev branch (code editor)..." -ForegroundColor Cyan
+    $syncResult = git push $repoUrl master:dev --force 2>&1
+    
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✓ Dev branch synced (code editor updated)" -ForegroundColor Green
+    } else {
+        Write-Host "⚠ Warning: Failed to sync dev branch (Code Editor may be out of date)" -ForegroundColor Yellow
+    }
+    
     Write-Host "Your skill should be live in a few minutes." -ForegroundColor Green
     Write-Host "`nCheck deployment status at:" -ForegroundColor Cyan
     Write-Host "https://developer.amazon.com/alexa/console/ask/build/custom/amzn1.ask.skill.ac0ac7be-22ea-4512-841b-f6a322cf5673/development/de_DE/" -ForegroundColor Blue
