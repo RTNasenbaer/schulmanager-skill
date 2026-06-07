@@ -122,7 +122,7 @@ exports.handler = SkillBuilders.custom()
    - Lambda Console → Configuration → General → Timeout → Set to 10 seconds
 2. Check backend is responding:
    ```powershell
-   Invoke-WebRequest https://schulmanager-backend-api.onrender.com/health
+   Invoke-WebRequest http://localhost:3000/health
    ```
 3. Reduce axios timeout in code (currently 30 seconds)
 

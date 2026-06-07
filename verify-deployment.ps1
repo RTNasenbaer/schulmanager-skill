@@ -117,12 +117,12 @@ if ($LASTEXITCODE -eq 0) {
 
 # Check 7: Backend API URL configured
 Write-Host "[7/7] Checking backend API configuration..." -ForegroundColor Yellow
-$apiConfig = Select-String -Path "lambda/services/apiClient.service.js" -Pattern "BACKEND_API_URL"
+$apiConfig = Select-String -Path "lambda/services/apiClient.service.ts" -Pattern "BACKEND_API_URL|getRuntimeConfig"
 if ($apiConfig) {
     Write-Host "  ✅ Backend API URL is configured" -ForegroundColor Green
     $apiConfig | ForEach-Object { Write-Host "     $($_.Line.Trim())" -ForegroundColor Gray }
 } else {
-    Write-Host "  ⚠️  Backend API URL not found in apiClient.service.js" -ForegroundColor Yellow
+    Write-Host "  ⚠️  Backend API URL not found in apiClient.service.ts" -ForegroundColor Yellow
 }
 
 # Summary

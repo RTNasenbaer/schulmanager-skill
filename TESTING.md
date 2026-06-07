@@ -40,7 +40,7 @@ Syncs the dev branch with master (needed for Alexa code editor to work).
 
 ### First Time Setup
 1. Run `.\sync-alexa-branches.ps1` once to enable the Alexa code editor
-2. Make sure your `.env` file has `API_BASE_URL` configured
+2. Make sure your `.env` file has `BACKEND_API_URL` configured
 3. Deploy with `.\deploy-to-alexa.ps1`
 
 ---
@@ -103,7 +103,7 @@ User  > quit
 
 ### "Backend API not responding"
 1. Check if your backend is running
-2. Verify `API_BASE_URL` in `.env` file
+2. Verify `BACKEND_API_URL` in `.env` file
 3. Test manually: `Invoke-WebRequest -Uri "$apiUrl/health"`
 
 ### "Code editor disabled in Alexa Console"

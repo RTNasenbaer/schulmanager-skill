@@ -6,6 +6,7 @@
 import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response, IntentRequest } from 'ask-sdk-model';
 import { apiClient } from '../services/apiClient.service';
+import { resolveSkillUserId } from '../utils/userContext';
 
 export const TomorrowCancelledIntentHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -17,7 +18,7 @@ export const TomorrowCancelledIntentHandler: RequestHandler = {
 
   async handle(handlerInput: HandlerInput): Promise<Response> {
     try {
-      const userId = handlerInput.requestEnvelope.context.System.user.userId;
+      const userId = resolveSkillUserId(handlerInput);
       const cancelled = await apiClient.getTomorrowCancelled(userId);
 
       if (!cancelled || cancelled.length === 0) {

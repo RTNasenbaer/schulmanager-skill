@@ -7,6 +7,7 @@ import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response, IntentRequest } from 'ask-sdk-model';
 import { apiClient } from '../services/apiClient.service';
 import { formatLessonsForSpeech } from '../utils/responseBuilder.util';
+import { resolveSkillUserId } from '../utils/userContext';
 
 export const TodayScheduleIntentHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -18,8 +19,7 @@ export const TodayScheduleIntentHandler: RequestHandler = {
 
   async handle(handlerInput: HandlerInput): Promise<Response> {
     try {
-      // TODO: User-ID aus Alexa-Session holen
-      const userId = handlerInput.requestEnvelope.context.System.user.userId;
+      const userId = resolveSkillUserId(handlerInput);
 
       // API-Call zum Backend
       const timetable = await apiClient.getTodayTimetable(userId);

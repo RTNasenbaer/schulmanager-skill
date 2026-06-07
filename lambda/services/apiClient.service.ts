@@ -4,10 +4,9 @@
  */
 
 import axios, { AxiosInstance } from 'axios';
+import { getRuntimeConfig } from '../utils/runtimeConfig';
 
-// Production backend configuration
-const BACKEND_API_URL = 'https://schulmanager-backend-api.onrender.com/api';
-const API_KEY = process.env.API_KEY || 'nVDlr2QzHS7qZN4sjo8mfBGpEXxvIyKP';
+const runtimeConfig = getRuntimeConfig();
 
 class ApiClient {
   private client: AxiosInstance;
@@ -16,11 +15,11 @@ class ApiClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL: BACKEND_API_URL,
+      baseURL: runtimeConfig.backendApiUrl,
       timeout: 30000, // Increased for Render cold starts
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': API_KEY,
+        'X-API-Key': runtimeConfig.apiKey,
       },
     });
 
@@ -66,9 +65,7 @@ class ApiClient {
   async getTodayTimetable(userId: string) {
     return this.makeRequestWithRetry(async () => {
       try {
-        const response = await this.client.get('/timetable/today', {
-          headers: { 'X-User-Id': userId },
-        });
+        const response = await this.client.get('/timetable/today', this.buildUserHeaders(userId));
         return response.data.data;
       } catch (error) {
         console.error('API Error (getTodayTimetable):', error);
@@ -82,9 +79,7 @@ class ApiClient {
    */
   async getTomorrowTimetable(userId: string) {
     try {
-      const response = await this.client.get('/timetable/tomorrow', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/timetable/tomorrow', this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getTomorrowTimetable):', error);
@@ -97,9 +92,7 @@ class ApiClient {
    */
   async getTodaySubstitutions(userId: string) {
     try {
-      const response = await this.client.get('/substitutions/today', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/substitutions/today', this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getTodaySubstitutions):', error);
@@ -112,9 +105,7 @@ class ApiClient {
    */
   async getTodayCancelled(userId: string) {
     try {
-      const response = await this.client.get('/cancelled/today', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/cancelled/today', this.buildUserHeaders(userId));
       return response.data;
     } catch (error) {
       console.error('API Error (getTodayCancelled):', error);
@@ -127,9 +118,7 @@ class ApiClient {
    */
   async getWeekTimetable(userId: string) {
     try {
-      const response = await this.client.get('/timetable/week', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/timetable/week', this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getWeekTimetable):', error);
@@ -142,9 +131,7 @@ class ApiClient {
    */
   async getTimetableByDate(userId: string, date: string) {
     try {
-      const response = await this.client.get(`/timetable/date/${date}`, {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get(`/timetable/date/${date}`, this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getTimetableByDate):', error);
@@ -157,9 +144,7 @@ class ApiClient {
    */
   async getTomorrowSubstitutions(userId: string) {
     try {
-      const response = await this.client.get('/substitutions/tomorrow', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/substitutions/tomorrow', this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getTomorrowSubstitutions):', error);
@@ -172,9 +157,7 @@ class ApiClient {
    */
   async getSubstitutionsByDate(userId: string, date: string) {
     try {
-      const response = await this.client.get(`/substitutions/date/${date}`, {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get(`/substitutions/date/${date}`, this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getSubstitutionsByDate):', error);
@@ -187,9 +170,7 @@ class ApiClient {
    */
   async getTomorrowCancelled(userId: string) {
     try {
-      const response = await this.client.get('/cancelled/tomorrow', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/cancelled/tomorrow', this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getTomorrowCancelled):', error);
@@ -202,9 +183,7 @@ class ApiClient {
    */
   async getWeekCancelled(userId: string) {
     try {
-      const response = await this.client.get('/cancelled/week', {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get('/cancelled/week', this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getWeekCancelled):', error);
@@ -217,14 +196,20 @@ class ApiClient {
    */
   async getCancelledByDate(userId: string, date: string) {
     try {
-      const response = await this.client.get(`/cancelled/date/${date}`, {
-        headers: { 'X-User-Id': userId },
-      });
+      const response = await this.client.get(`/cancelled/date/${date}`, this.buildUserHeaders(userId));
       return response.data.data;
     } catch (error) {
       console.error('API Error (getCancelledByDate):', error);
       throw error;
     }
+  }
+
+  private buildUserHeaders(userId: string) {
+    return {
+      headers: {
+        'X-User-Id': userId,
+      },
+    };
   }
 }
 

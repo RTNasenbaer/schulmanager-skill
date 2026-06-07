@@ -18,7 +18,17 @@ function Test-BackendAPI {
     Write-Host "📡 Testing Backend API..." -ForegroundColor Yellow
     
     # Check if backend API is running
-    $apiUrl = $env:API_BASE_URL
+    $apiUrl = $env:BACKEND_API_URL
+    if (-not $apiUrl) {
+        $apiUrl = $env:API_BASE_URL
+    }
+    if (-not $apiUrl) {
+        $envFile = ".env"
+        if (Test-Path $envFile) {
+            $apiUrl = (Get-Content $envFile | Where-Object { $_ -match 'BACKEND_API_URL=' }) -replace 'BACKEND_API_URL=',''
+        }
+    }
+
     if (-not $apiUrl) {
         $envFile = ".env"
         if (Test-Path $envFile) {
@@ -38,7 +48,7 @@ function Test-BackendAPI {
             return $false
         }
     } else {
-        Write-Host "  ⚠️  API_BASE_URL not found in .env file" -ForegroundColor Yellow
+        Write-Host "  ⚠️  BACKEND_API_URL not found in .env file" -ForegroundColor Yellow
         return $false
     }
 }

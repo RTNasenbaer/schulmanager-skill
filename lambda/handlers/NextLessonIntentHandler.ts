@@ -7,6 +7,7 @@ import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response, IntentRequest } from 'ask-sdk-model';
 import { apiClient } from '../services/apiClient.service';
 import { findNextLesson } from '../utils/timeHelper.util';
+import { resolveSkillUserId } from '../utils/userContext';
 
 export const NextLessonIntentHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -18,7 +19,7 @@ export const NextLessonIntentHandler: RequestHandler = {
 
   async handle(handlerInput: HandlerInput): Promise<Response> {
     try {
-      const userId = handlerInput.requestEnvelope.context.System.user.userId;
+      const userId = resolveSkillUserId(handlerInput);
 
       const timetable = await apiClient.getTodayTimetable(userId);
 

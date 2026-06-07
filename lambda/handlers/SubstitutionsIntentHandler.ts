@@ -7,6 +7,7 @@ import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response, IntentRequest } from 'ask-sdk-model';
 import { apiClient } from '../services/apiClient.service';
 import { formatSubstitutionsForSpeech } from '../utils/responseBuilder.util';
+import { resolveSkillUserId } from '../utils/userContext';
 
 export const SubstitutionsIntentHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -18,7 +19,7 @@ export const SubstitutionsIntentHandler: RequestHandler = {
 
   async handle(handlerInput: HandlerInput): Promise<Response> {
     try {
-      const userId = handlerInput.requestEnvelope.context.System.user.userId;
+      const userId = resolveSkillUserId(handlerInput);
 
       const substitutions = await apiClient.getTodaySubstitutions(userId);
 
