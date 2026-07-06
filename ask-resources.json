@@ -2,21 +2,8 @@
   "askcliResourcesVersion": "2020-03-31",
   "profiles": {
     "default": {
-      "skillId": "amzn1.ask.skill.ac0ac7be-22ea-4512-841b-f6a322cf5673",
-      "skillMetadata": {
-        "src": "./skill-package"
-      },
-      "code": {
-        "default": {
-          "src": "./lambda"
-        }
-      },
       "skillInfrastructure": {
-        "type": "@ask-cli/hosted-skill-deployer",
-        "userConfig": {
-          "runtime": "nodejs18.x",
-          "handler": "index.handler"
-        }
+        "type": "@ask-cli/hosted-skill-deployer"
       }
     }
   }
