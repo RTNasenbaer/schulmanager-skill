@@ -16,7 +16,7 @@ class ApiClient {
   constructor() {
     this.client = axios.create({
       baseURL: runtimeConfig.backendApiUrl,
-      timeout: 30000, // Increased for Render cold starts
+      timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
         'X-API-Key': runtimeConfig.apiKey,
@@ -27,9 +27,9 @@ class ApiClient {
     this.client.interceptors.response.use(
       (response) => response,
       (error) => {
-        // Check if we got HTML instead of JSON (Render sleep/redirect page)
+        // Check if we got HTML instead of JSON
         if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE html>')) {
-          console.warn('Backend returned HTML (likely sleeping on Render.com)');
+          console.warn('Backend returned HTML instead of JSON');
           return Promise.reject(new Error('BACKEND_SLEEPING'));
         }
         return Promise.reject(error);
@@ -72,6 +72,38 @@ class ApiClient {
         throw error;
       }
     });
+  }
+
+  /**
+   * Pairing-Code für einen Alexa-User erzeugen
+   */
+  async createPairingSession(alexaUserId: string) {
+    try {
+      const response = await this.client.post('/pairing/sessions', {
+        alexaUserId,
+      });
+
+      return response.data.data;
+    } catch (error) {
+      console.error('API Error (createPairingSession):', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Bestehende Pairing-Zuordnung auflösen
+   */
+  async resolvePairingSession(alexaUserId: string) {
+    try {
+      const response = await this.client.get('/pairing/resolve', {
+        params: { alexaUserId },
+      });
+
+      return response.data.data as { alexaUserId: string; linkedUserId: string | null };
+    } catch (error) {
+      console.error('API Error (resolvePairingSession):', error);
+      throw error;
+    }
   }
 
   /**

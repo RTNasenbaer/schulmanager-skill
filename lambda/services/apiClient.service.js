@@ -9,17 +9,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.apiClient = void 0;
 const axios_1 = __importDefault(require("axios"));
-// Production backend configuration
-const BACKEND_API_URL = 'https://schulmanager-backend-api.onrender.com/api';
+const DEFAULT_BACKEND_API_URL = 'http://localhost:3000/api';
 const API_KEY = process.env.API_KEY || 'nVDlr2QzHS7qZN4sjo8mfBGpEXxvIyKP';
+function normalizeUrl(url) {
+    return url.replace(/\/$/, '');
+}
+function getBackendApiUrl() {
+    return normalizeUrl(process.env.BACKEND_API_URL || DEFAULT_BACKEND_API_URL);
+}
 class ApiClient {
     client;
     maxRetries = 2;
     retryDelay = 3000; // 3 seconds
     constructor() {
         this.client = axios_1.default.create({
-            baseURL: BACKEND_API_URL,
-            timeout: 30000, // Increased for Render cold starts
+            baseURL: getBackendApiUrl(),
+            timeout: 30000,
             headers: {
                 'Content-Type': 'application/json',
                 'X-API-Key': API_KEY,
@@ -27,9 +32,9 @@ class ApiClient {
         });
         // Add response interceptor to detect HTML responses
         this.client.interceptors.response.use((response) => response, (error) => {
-            // Check if we got HTML instead of JSON (Render sleep/redirect page)
+            // Check if we got HTML instead of JSON
             if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE html>')) {
-                console.warn('Backend returned HTML (likely sleeping on Render.com)');
+                console.warn('Backend returned HTML instead of JSON');
                 return Promise.reject(new Error('BACKEND_SLEEPING'));
             }
             return Promise.reject(error);

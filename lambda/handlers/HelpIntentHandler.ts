@@ -19,6 +19,7 @@ export const HelpIntentHandler: RequestHandler = {
       'Du kannst fragen: Was habe ich heute? Was habe ich morgen? Stundenplan für die Woche? ' +
       'Gibt es Vertretungen? Welche Stunden fallen morgen aus? Was fällt diese Woche aus? ' +
       'Oder: Was habe ich als nächstes? ' +
+      'Wenn du mehrere Konten verwaltest, verbinde sie zuerst im Dashboard per Pairing-Code. ' +
       'Was möchtest du wissen?';
 
     return handlerInput.responseBuilder
