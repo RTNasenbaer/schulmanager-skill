@@ -10,6 +10,7 @@ interface Lesson {
   startTime: string;
   lessonNumber: number;
   isCancelled: boolean;
+  isSubstitution?: boolean;
 }
 
 interface Substitution {
@@ -45,7 +46,11 @@ export function formatLessonsForSpeech(lessons: Lesson[], day: string = 'heute')
       speech += 'und ';
     }
 
-    speech += `um ${lesson.startTime} Uhr ${lesson.subject} bei ${lesson.teacher}`;
+    if (lesson.isSubstitution) {
+      speech += `um ${lesson.startTime} Uhr ${lesson.subject} mit Vertretung bei ${lesson.teacher}`;
+    } else {
+      speech += `um ${lesson.startTime} Uhr ${lesson.subject} bei ${lesson.teacher}`;
+    }
     
     if (lesson.room && lesson.room !== 'N/A') {
       speech += ` in Raum ${lesson.room}`;
