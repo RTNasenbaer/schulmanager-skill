@@ -12,6 +12,7 @@ interface Lesson {
   lessonNumber: number;
   date: string;
   isCancelled: boolean;
+  isSubstitution?: boolean;
 }
 
 /**
