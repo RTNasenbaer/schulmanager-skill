@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "schulmanager api",
+      "invocationName": "schulmanager",
       "intents": [
         {
           "name": "TodayScheduleIntent",
