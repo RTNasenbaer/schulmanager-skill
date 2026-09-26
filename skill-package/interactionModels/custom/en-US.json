@@ -1,0 +1,115 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "schulmanager api",
+      "intents": [
+        {
+          "name": "TodayScheduleIntent",
+          "slots": [],
+          "samples": [
+            "what classes do I have today",
+            "what do I have today",
+            "schedule for today",
+            "what's on my schedule today",
+            "what subjects do I have today",
+            "what do I have at school today"
+          ]
+        },
+        {
+          "name": "TomorrowScheduleIntent",
+          "slots": [],
+          "samples": [
+            "what classes do I have tomorrow",
+            "what do I have tomorrow",
+            "schedule for tomorrow",
+            "what's on my schedule tomorrow",
+            "what subjects do I have tomorrow"
+          ]
+        },
+        {
+          "name": "SubstitutionsIntent",
+          "slots": [],
+          "samples": [
+            "which classes are cancelled today",
+            "are there any substitutions",
+            "are there substitutions today",
+            "is anything cancelled today",
+            "substitution plan for today",
+            "what cancellations are there today"
+          ]
+        },
+        {
+          "name": "NextLessonIntent",
+          "slots": [],
+          "samples": [
+            "what do I have next",
+            "what class is next",
+            "what's coming up next",
+            "next class",
+            "what's on next"
+          ]
+        },
+        {
+          "name": "TomorrowSubstitutionsIntent",
+          "slots": [],
+          "samples": [
+            "which classes are cancelled tomorrow",
+            "are there substitutions tomorrow",
+            "substitution plan for tomorrow",
+            "what cancellations are there tomorrow",
+            "is anything cancelled tomorrow"
+          ]
+        },
+        {
+          "name": "WeekScheduleIntent",
+          "slots": [],
+          "samples": [
+            "schedule for the week",
+            "what do I have this week",
+            "weekly schedule",
+            "show me the week",
+            "week schedule"
+          ]
+        },
+        {
+          "name": "TomorrowCancelledIntent",
+          "slots": [],
+          "samples": [
+            "which classes are cancelled tomorrow",
+            "what's cancelled tomorrow",
+            "cancelled classes tomorrow",
+            "cancellations tomorrow"
+          ]
+        },
+        {
+          "name": "WeekCancelledIntent",
+          "slots": [],
+          "samples": [
+            "which classes are cancelled this week",
+            "what's cancelled this week",
+            "cancelled classes this week",
+            "cancellations this week",
+            "weekly cancellations"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        }
+      ],
+      "types": []
+    }
+  }
+}
