@@ -3,16 +3,21 @@
  * Gibt ausgefallene Stunden für die Woche aus
  */
 
-import { HandlerInput, RequestHandler } from 'ask-sdk-core';
-import { Response, IntentRequest } from 'ask-sdk-model';
-import { apiClient } from '../services/apiClient.service';
-import { resolveSkillUserId } from '../utils/userContext';
+import { HandlerInput, RequestHandler } from "ask-sdk-core";
+import { Response, IntentRequest } from "ask-sdk-model";
+import { apiClient } from "../services/apiClient.service";
+import { resolveSkillUserId } from "../utils/userContext";
+
+interface CancelledLesson {
+  date: string;
+}
 
 export const WeekCancelledIntentHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
     return (
-      handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-      (handlerInput.requestEnvelope.request as IntentRequest).intent.name === 'WeekCancelledIntent'
+      handlerInput.requestEnvelope.request.type === "IntentRequest" &&
+      (handlerInput.requestEnvelope.request as IntentRequest).intent.name ===
+        "WeekCancelledIntent"
     );
   },
 
@@ -22,17 +27,15 @@ export const WeekCancelledIntentHandler: RequestHandler = {
       const weekCancelled = await apiClient.getWeekCancelled(userId);
 
       if (!weekCancelled || weekCancelled.length === 0) {
-        const speakOutput = 'Diese Woche sind keine Stunden ausgefallen.';
-        return handlerInput.responseBuilder
-          .speak(speakOutput)
-          .getResponse();
+        const speakOutput = "Diese Woche sind keine Stunden ausgefallen.";
+        return handlerInput.responseBuilder.speak(speakOutput).getResponse();
       }
 
-      let speakOutput = `Diese Woche ${weekCancelled.length === 1 ? 'fällt eine Stunde aus' : `fallen ${weekCancelled.length} Stunden aus`}. `;
+      let speakOutput = `Diese Woche ${weekCancelled.length === 1 ? "fällt eine Stunde aus" : `fallen ${weekCancelled.length} Stunden aus`}. `;
 
       // Group by date
-      const byDate: { [key: string]: any[] } = {};
-      weekCancelled.forEach((lesson: any) => {
+      const byDate: { [key: string]: CancelledLesson[] } = {};
+      weekCancelled.forEach((lesson: CancelledLesson) => {
         if (!byDate[lesson.date]) {
           byDate[lesson.date] = [];
         }
@@ -40,24 +43,21 @@ export const WeekCancelledIntentHandler: RequestHandler = {
       });
 
       Object.entries(byDate).forEach(([date, lessons]) => {
-        const dayName = new Date(date).toLocaleDateString('de-DE', { weekday: 'long' });
-        speakOutput += `${dayName}: ${lessons.length} Stunde${lessons.length > 1 ? 'n' : ''}. `;
+        const dayName = new Date(date).toLocaleDateString("de-DE", {
+          weekday: "long",
+        });
+        speakOutput += `${dayName}: ${lessons.length} Stunde${lessons.length > 1 ? "n" : ""}. `;
       });
 
-      return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .getResponse();
-
+      return handlerInput.responseBuilder.speak(speakOutput).getResponse();
     } catch (error) {
-      console.error('Error fetching week cancelled:', error);
+      console.error("Error fetching week cancelled:", error);
 
-      const speakOutput = 
-        'Es gab ein Problem beim Abrufen der ausgefallenen Stunden. ' +
-        'Bitte versuche es später erneut.';
+      const speakOutput =
+        "Es gab ein Problem beim Abrufen der ausgefallenen Stunden. " +
+        "Bitte versuche es später erneut.";
 
-      return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .getResponse();
+      return handlerInput.responseBuilder.speak(speakOutput).getResponse();
     }
   },
 };

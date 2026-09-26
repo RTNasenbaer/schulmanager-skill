@@ -3,8 +3,8 @@
  * Kommuniziert mit dem Backend API Service
  */
 
-import axios, { AxiosInstance } from 'axios';
-import { getRuntimeConfig } from '../utils/runtimeConfig';
+import axios, { AxiosInstance } from "axios";
+import { getRuntimeConfig } from "../utils/runtimeConfig";
 
 const runtimeConfig = getRuntimeConfig();
 
@@ -18,8 +18,8 @@ class ApiClient {
       baseURL: runtimeConfig.backendApiUrl,
       timeout: 30000,
       headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': runtimeConfig.apiKey,
+        "Content-Type": "application/json",
+        "X-API-Key": runtimeConfig.apiKey,
       },
     });
 
@@ -28,30 +28,41 @@ class ApiClient {
       (response) => response,
       (error) => {
         // Check if we got HTML instead of JSON
-        if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<!DOCTYPE html>')) {
-          console.warn('Backend returned HTML instead of JSON');
-          return Promise.reject(new Error('BACKEND_SLEEPING'));
+        if (
+          error.response?.data &&
+          typeof error.response.data === "string" &&
+          error.response.data.includes("<!DOCTYPE html>")
+        ) {
+          console.warn("Backend returned HTML instead of JSON");
+          return Promise.reject(new Error("BACKEND_SLEEPING"));
         }
         return Promise.reject(error);
-      }
+      },
     );
   }
 
   /**
    * Retry logic for cold start scenarios
    */
-  private async makeRequestWithRetry<T>(requestFn: () => Promise<T>, retryCount = 0): Promise<T> {
+  private async makeRequestWithRetry<T>(
+    requestFn: () => Promise<T>,
+    retryCount = 0,
+  ): Promise<T> {
     try {
       return await requestFn();
-    } catch (error: any) {
+    } catch (error: unknown) {
       const isLastRetry = retryCount >= this.maxRetries;
-      const isRetryableError = error.message === 'BACKEND_SLEEPING' || 
-                               error.code === 'ECONNABORTED' || 
-                               error.code === 'ETIMEDOUT';
+      const errorDetails = error as { message?: unknown; code?: unknown };
+      const isRetryableError =
+        errorDetails.message === "BACKEND_SLEEPING" ||
+        errorDetails.code === "ECONNABORTED" ||
+        errorDetails.code === "ETIMEDOUT";
 
       if (isRetryableError && !isLastRetry) {
-        console.log(`Retry ${retryCount + 1}/${this.maxRetries} after ${this.retryDelay}ms...`);
-        await new Promise(resolve => setTimeout(resolve, this.retryDelay));
+        console.log(
+          `Retry ${retryCount + 1}/${this.maxRetries} after ${this.retryDelay}ms...`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, this.retryDelay));
         return this.makeRequestWithRetry(requestFn, retryCount + 1);
       }
 
@@ -65,10 +76,13 @@ class ApiClient {
   async getTodayTimetable(userId: string) {
     return this.makeRequestWithRetry(async () => {
       try {
-        const response = await this.client.get('/timetable/today', this.buildUserHeaders(userId));
+        const response = await this.client.get(
+          "/timetable/today",
+          this.buildUserHeaders(userId),
+        );
         return response.data.data;
       } catch (error) {
-        console.error('API Error (getTodayTimetable):', error);
+        console.error("API Error (getTodayTimetable):", error);
         throw error;
       }
     });
@@ -79,13 +93,13 @@ class ApiClient {
    */
   async createPairingSession(alexaUserId: string) {
     try {
-      const response = await this.client.post('/pairing/sessions', {
+      const response = await this.client.post("/pairing/sessions", {
         alexaUserId,
       });
 
       return response.data.data;
     } catch (error) {
-      console.error('API Error (createPairingSession):', error);
+      console.error("API Error (createPairingSession):", error);
       throw error;
     }
   }
@@ -95,13 +109,16 @@ class ApiClient {
    */
   async resolvePairingSession(alexaUserId: string) {
     try {
-      const response = await this.client.get('/pairing/resolve', {
+      const response = await this.client.get("/pairing/resolve", {
         params: { alexaUserId },
       });
 
-      return response.data.data as { alexaUserId: string; linkedUserId: string | null };
+      return response.data.data as {
+        alexaUserId: string;
+        linkedUserId: string | null;
+      };
     } catch (error) {
-      console.error('API Error (resolvePairingSession):', error);
+      console.error("API Error (resolvePairingSession):", error);
       throw error;
     }
   }
@@ -111,10 +128,13 @@ class ApiClient {
    */
   async getTomorrowTimetable(userId: string) {
     try {
-      const response = await this.client.get('/timetable/tomorrow', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/timetable/tomorrow",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getTomorrowTimetable):', error);
+      console.error("API Error (getTomorrowTimetable):", error);
       throw error;
     }
   }
@@ -124,10 +144,13 @@ class ApiClient {
    */
   async getTodaySubstitutions(userId: string) {
     try {
-      const response = await this.client.get('/substitutions/today', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/substitutions/today",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getTodaySubstitutions):', error);
+      console.error("API Error (getTodaySubstitutions):", error);
       throw error;
     }
   }
@@ -137,10 +160,13 @@ class ApiClient {
    */
   async getTodayCancelled(userId: string) {
     try {
-      const response = await this.client.get('/cancelled/today', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/cancelled/today",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getTodayCancelled):', error);
+      console.error("API Error (getTodayCancelled):", error);
       throw error;
     }
   }
@@ -150,10 +176,13 @@ class ApiClient {
    */
   async getWeekTimetable(userId: string) {
     try {
-      const response = await this.client.get('/timetable/week', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/timetable/week",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getWeekTimetable):', error);
+      console.error("API Error (getWeekTimetable):", error);
       throw error;
     }
   }
@@ -163,10 +192,13 @@ class ApiClient {
    */
   async getTimetableByDate(userId: string, date: string) {
     try {
-      const response = await this.client.get(`/timetable/date/${date}`, this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        `/timetable/date/${date}`,
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getTimetableByDate):', error);
+      console.error("API Error (getTimetableByDate):", error);
       throw error;
     }
   }
@@ -176,10 +208,13 @@ class ApiClient {
    */
   async getTomorrowSubstitutions(userId: string) {
     try {
-      const response = await this.client.get('/substitutions/tomorrow', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/substitutions/tomorrow",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getTomorrowSubstitutions):', error);
+      console.error("API Error (getTomorrowSubstitutions):", error);
       throw error;
     }
   }
@@ -189,10 +224,13 @@ class ApiClient {
    */
   async getSubstitutionsByDate(userId: string, date: string) {
     try {
-      const response = await this.client.get(`/substitutions/date/${date}`, this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        `/substitutions/date/${date}`,
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getSubstitutionsByDate):', error);
+      console.error("API Error (getSubstitutionsByDate):", error);
       throw error;
     }
   }
@@ -202,10 +240,13 @@ class ApiClient {
    */
   async getTomorrowCancelled(userId: string) {
     try {
-      const response = await this.client.get('/cancelled/tomorrow', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/cancelled/tomorrow",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getTomorrowCancelled):', error);
+      console.error("API Error (getTomorrowCancelled):", error);
       throw error;
     }
   }
@@ -215,10 +256,13 @@ class ApiClient {
    */
   async getWeekCancelled(userId: string) {
     try {
-      const response = await this.client.get('/cancelled/week', this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        "/cancelled/week",
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getWeekCancelled):', error);
+      console.error("API Error (getWeekCancelled):", error);
       throw error;
     }
   }
@@ -228,10 +272,13 @@ class ApiClient {
    */
   async getCancelledByDate(userId: string, date: string) {
     try {
-      const response = await this.client.get(`/cancelled/date/${date}`, this.buildUserHeaders(userId));
+      const response = await this.client.get(
+        `/cancelled/date/${date}`,
+        this.buildUserHeaders(userId),
+      );
       return response.data.data;
     } catch (error) {
-      console.error('API Error (getCancelledByDate):', error);
+      console.error("API Error (getCancelledByDate):", error);
       throw error;
     }
   }
@@ -239,7 +286,7 @@ class ApiClient {
   private buildUserHeaders(userId: string) {
     return {
       headers: {
-        'X-User-Id': userId,
+        "X-User-Id": userId,
       },
     };
   }
